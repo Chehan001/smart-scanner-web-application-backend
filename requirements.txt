@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+scapy
+bleak
+pandas
+matplotlib
+plotly
+requests
+python-multipart
+nest_asyncio
