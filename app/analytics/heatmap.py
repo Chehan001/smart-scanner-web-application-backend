@@ -3,7 +3,6 @@ import numpy as np
 import io
 import base64
 
-# Simple store for samples: list of (x, y, signal)
 samples = []
 
 def add_sample(x: float, y: float, signal: int):
@@ -26,13 +25,11 @@ def generate_heatmap():
     plt.ylabel("Y Coordinate")
     plt.grid(True)
     
-    # Save to buffer
     buf = io.BytesIO()
     plt.savefig(buf, format='png')
     buf.seek(0)
     plt.close()
     
-    # Encode to base64
     img_str = base64.b64encode(buf.read()).decode('utf-8')
     return img_str
 

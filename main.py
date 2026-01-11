@@ -19,6 +19,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get("/")
@@ -41,7 +42,7 @@ async def get_ble_scan():
 
 @app.get("/scan/all", response_model=ScanResult)
 async def get_all_scan():
-    # Run in parallel --> if possible -->  but wifi is sync currently
+    # Run in parallel  --> if possible --> but wifi is sync currently
     wifi_devices = wifi_scanner.scan_wifi()
     ble_devices = await ble_scanner.scan_ble()
     
@@ -78,6 +79,7 @@ def clear_heatmap():
 
 @app.post("/report/export")
 async def generate_report(background_tasks: BackgroundTasks):
+
     wifi = wifi_scanner.scan_wifi()
     ble = await ble_scanner.scan_ble()
     
