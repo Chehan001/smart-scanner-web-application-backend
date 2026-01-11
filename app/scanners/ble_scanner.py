@@ -8,7 +8,7 @@ async def scan_ble():
     
     for d, adv in devices.values():
         name = d.name or adv.local_name or "Unknown"
-        # Determine type vaguely based on name or services (simplified)
+        # Determine type vaguely based on name 
         device_type = "Unknown"
         if "Band" in name or "Watch" in name:
             device_type = "Wearable"

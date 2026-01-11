@@ -6,8 +6,6 @@ def parse_netsh_output(output):
     networks = []
     current_ssid = None
     
-    # Split by double newlines usually separates networks, but BSSIDs are within SSIDs
-    # We iterate line by line
     lines = output.split('\n')
     
     current_network = {}
@@ -37,9 +35,6 @@ def parse_netsh_output(output):
             parts = line.split(":")
             if len(parts) >= 2:
                 # BSSID format is xx:xx:xx...
-                # line looks like "BSSID 1 : ab:cd:ef..."
-                # we need to handle the first colon separater carefully or use regex
-                # regex is safer for "BSSID 1 : "
                 bssid_match = re.search(r"BSSID \d+ : (.*)", line)
                 if bssid_match:
                     current_bssid = {"bssid": bssid_match.group(1).strip()}
@@ -69,9 +64,7 @@ def create_wifi_device(ssid, encryption, bssid_info):
     )
 
 def scan_wifi():
-    # Windows netsh fallback
     try:
-        # Check OS or just try/except
         result = subprocess.run(["netsh", "wlan", "show", "networks", "mode=bssid"], capture_output=True, text=True)
         if result.returncode == 0:
             return parse_netsh_output(result.stdout)

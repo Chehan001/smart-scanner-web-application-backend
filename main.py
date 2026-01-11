@@ -19,7 +19,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Mount static for reports if needed (or just serve via API)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get("/")
@@ -42,7 +41,7 @@ async def get_ble_scan():
 
 @app.get("/scan/all", response_model=ScanResult)
 async def get_all_scan():
-    # Run in parallel if possible, but wifi is sync currently
+    # Run in parallel --> if possible -->  but wifi is sync currently
     wifi_devices = wifi_scanner.scan_wifi()
     ble_devices = await ble_scanner.scan_ble()
     
@@ -70,7 +69,7 @@ def add_heatmap_point(point: HeatmapPoint):
 @app.get("/heatmap")
 def get_heatmap():
     img = heatmap.generate_heatmap()
-    return {"image": img} # Returns base64
+    return {"image": img} 
 
 @app.delete("/heatmap")
 def clear_heatmap():
@@ -79,8 +78,6 @@ def clear_heatmap():
 
 @app.post("/report/export")
 async def generate_report(background_tasks: BackgroundTasks):
-    # For now, just trigger a fresh scan and save
-    # In real app, might want to export *current* view or specific data
     wifi = wifi_scanner.scan_wifi()
     ble = await ble_scanner.scan_ble()
     
